@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{0FD43640-DFC0-44F8-91B6-C109E999FABD}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Install\YouTube.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Demos\DemoYouTube.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="YouTube">
+        <MSBuild Projects="Install\YouTube.dproj"/>
+    </Target>
+    <Target Name="YouTube:Clean">
+        <MSBuild Projects="Install\YouTube.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="YouTube:Make">
+        <MSBuild Projects="Install\YouTube.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="DemoYouTube">
+        <MSBuild Projects="Demos\DemoYouTube.dproj"/>
+    </Target>
+    <Target Name="DemoYouTube:Clean">
+        <MSBuild Projects="Demos\DemoYouTube.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DemoYouTube:Make">
+        <MSBuild Projects="Demos\DemoYouTube.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="YouTube;DemoYouTube"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="YouTube:Clean;DemoYouTube:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="YouTube:Make;DemoYouTube:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
