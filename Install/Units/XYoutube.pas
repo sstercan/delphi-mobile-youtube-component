@@ -23,8 +23,6 @@ type
   TInformations = class
     Size,
     VideoLink,
-    LengthSeconds,
-    Stereo3d,
     MimeType,
     Quality: String;
   end;
@@ -53,6 +51,7 @@ type
       FYTId: String;
       FCombo: TComboBox;
       FOnDownload: TOnDownload;
+      FDesign: Boolean;
       function  GetId: String;
       procedure SetId(const Value: String);
       procedure GetInformation(ID: String);
@@ -64,17 +63,32 @@ type
       procedure PlayVideo(Link: String);
       procedure DownloadVideo(Link: String);
       class function Split(const Input: string; const Delimiter: Char): TStringDynArray;
+      class function SecToTime(Sec: Integer): string;
+      function GetItem(const Index: Integer): TInformations;
+      function GetSize: String;
+      function GetAuthor: String;
+      function GetSite: String;
+      function GetVersion: String;
+      function GetDes: Boolean;
+      procedure SetDes(const Value: Boolean);
     public
       constructor Create(AOwner: TComponent); override;
       destructor  Destroy; override;
       procedure Get;
       procedure Play;
       procedure Download;
-      property DownloadFolder : String      read FFolder     write FFolder;
+      property DownloadFolder              : String      read FFolder     write FFolder;
+      property Items[const Index: Integer] : TInformations read GetItem;    default;
+      function Count: Integer;
     published
       property Title          : String      read GetTitle;
       property YouTubeId      : String      read GetId       write SetId;
       property OnDownload     : TOnDownload read FOnDownload write FOnDownload;
+      property VideoSize      : String      read GetSize;
+      property Author         : String      read GetAuthor;
+      property Site           : String      read GetSite;
+      property GetDesign      : Boolean     read GetDes      write SetDes;
+      property Version        : String      read GetVersion;
   end;
 
 procedure Register;
@@ -101,6 +115,11 @@ end;
 
 { TYoutube }
 
+function TYoutube.Count: Integer;
+begin
+  Result := FInformations.Count;
+end;
+
 constructor TYoutube.Create(AOwner: TComponent);
 begin
   inherited;
@@ -109,8 +128,8 @@ begin
   YHTTP.Request.Accept := '*/*';
   YHTTP.Request.UserAgent := 'Mozilla/5.0 (Windows NT 6.1) Gecko/20130101 Firefox/21.0';
   YHTTP.Request.Host := 'www.youtube.com';
-//  FHTTP.OnWork  := HttpWork;
   FCombo        := TComboBox.Create(Self);
+  FDesign       := True;
 end;
 
 destructor TYoutube.Destroy;
@@ -160,8 +179,6 @@ begin
 
     if Length(F2) > 1 then
       FInf.Size := F2[1];
-
-    FInf.LengthSeconds := FLengthS;
 
     for I2 := System.Low(A2) to System.High(A2) do
     begin
@@ -220,6 +237,16 @@ begin
     GetInformation(YouTubeId);
 end;
 
+function TYoutube.GetAuthor: String;
+begin
+  Result := 'Barýþ Atalay';
+end;
+
+function TYoutube.GetDes: Boolean;
+begin
+  Result := FDesign;
+end;
+
 function TYoutube.GetId: String;
 begin
   Result := FYTId;
@@ -233,9 +260,30 @@ begin
   DoParse(YHTTP.Get(URL));
 end;
 
+function TYoutube.GetItem(const Index: Integer): TInformations;
+begin
+  Result := FInformations.Items[Index];
+end;
+
+function TYoutube.GetSite: String;
+begin
+  Result := 'http://brsatalay.blogspot.com.tr/';
+end;
+
+function TYoutube.GetSize: String;
+begin
+  if not FLengthS.Trim.IsEmpty then
+    Result := SecToTime(FLengthS.ToInteger);
+end;
+
 function TYoutube.GetTitle: String;
 begin
   Result := FTitle;
+end;
+
+function TYoutube.GetVersion: String;
+begin
+  Result := '1.0'
 end;
 
 procedure TYoutube.Play;
@@ -274,13 +322,34 @@ begin
 {$ENDIF}
 end;
 
+class function TYoutube.SecToTime(Sec: Integer): string;
+var
+   H, M, S: string;
+   ZH, ZM, ZS: Integer;
+begin
+   ZH := Sec div 3600;
+   ZM := Sec div 60 - ZH * 60;
+   ZS := Sec - (ZH * 3600 + ZM * 60) ;
+   H := IntToStr(ZH) ;
+   M := IntToStr(ZM) ;
+   S := IntToStr(ZS) ;
+   Result := H + ':' + M + ':' + S;
+end;
+
+procedure TYoutube.SetDes(const Value: Boolean);
+begin
+  if Value <> FDesign then
+    FDesign := Value;
+end;
+
 procedure TYoutube.SetId(const Value: String);
 begin
-  if Value <> FYTId then
-  begin
-    FYTId := Value;
-    Get;
-  end;
+  FYTId := Value;
+
+  if csDesigning in ComponentState then
+    if (not FDesign) or (Value.Trim.IsEmpty) then
+      Exit;
+  Get;
 end;
 
 procedure TYoutube.SetTitle(const Value: String);

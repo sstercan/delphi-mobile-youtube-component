@@ -2,15 +2,15 @@ object Form3: TForm3
   Left = 0
   Top = 0
   Caption = 'Form3'
-  ClientHeight = 567
-  ClientWidth = 384
+  ClientHeight = 615
+  ClientWidth = 360
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   DesignerMobile = True
-  DesignerWidth = 384
-  DesignerHeight = 592
-  DesignerDeviceName = 'Google Nexus 4'
+  DesignerWidth = 360
+  DesignerHeight = 640
+  DesignerDeviceName = 'Samsung Galaxy S4'
   DesignerOrientation = 0
   DesignerOSVersion = ''
   object Button1: TButton
@@ -18,8 +18,31 @@ object Form3: TForm3
     Height = 44.000000000000000000
     TabOrder = 3
     Text = 'Begin Download'
-    Width = 384.000000000000000000
+    Width = 360.000000000000000000
     OnClick = Button1Click
+  end
+  object Text1: TText
+    Align = Top
+    Height = 29.000000000000000000
+    Position.Y = 44.000000000000000000
+    Text = '0%'
+    Width = 360.000000000000000000
+  end
+  object ProgressBar1: TProgressBar
+    Align = Top
+    Height = 10.000000000000000000
+    Orientation = Horizontal
+    Position.Y = 73.000000000000000000
+    Width = 360.000000000000000000
+  end
+  object Button2: TButton
+    Align = Bottom
+    Height = 44.000000000000000000
+    Position.Y = 571.000000000000000000
+    TabOrder = 7
+    Text = 'Play Video'
+    Width = 360.000000000000000000
+    OnClick = Button2Click
   end
   object Image1: TImage
     MultiResBitmap.Height = 354
@@ -2680,36 +2703,21 @@ object Form3: TForm3
         FileName = 'C:\Program Files (x86)\DelphiComp\Android\Yotube\YouTube.jpg'
       end>
     Align = Client
-    Height = 440.000000000000000000
-    Width = 384.000000000000000000
+    Height = 396.000000000000000000
+    Width = 360.000000000000000000
   end
-  object Text1: TText
+  object Memo1: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
     Align = Top
-    Height = 29.000000000000000000
-    Position.Y = 44.000000000000000000
-    Text = '0%'
-    Width = 384.000000000000000000
-  end
-  object ProgressBar1: TProgressBar
-    Align = Top
-    Height = 10.000000000000000000
-    Orientation = Horizontal
-    Position.Y = 73.000000000000000000
-    Width = 384.000000000000000000
-  end
-  object Button2: TButton
-    Align = Bottom
-    Height = 44.000000000000000000
-    Position.Y = 523.000000000000000000
-    TabOrder = 7
-    Text = 'Play Video'
-    Width = 384.000000000000000000
-    OnClick = Button2Click
+    Height = 92.000000000000000000
+    Position.Y = 83.000000000000000000
+    TabOrder = 15
+    Width = 360.000000000000000000
   end
   object Youtube1: TYoutube
-    YouTubeId = 'lSi883W_kQw'
-    OnDownload = Youtube1Download
-    Left = 280
-    Top = 120
+    YouTubeId = 'AxBhD5EHAI0'
+    GetDesign = True
+    Left = 288
+    Top = 144
   end
 end
